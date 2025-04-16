@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: white; /* Ensure the iframe has a white background */
+        }
+
+        
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucia App</title>
+
+<!-- Referencia al archivo manifest -->
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Estilos CSS -->
+<style>
+body {
+font-family: Arial, sans-serif;
+background-color: #f9f9f9;
+margin: 0;
+padding: 20px;
+color: #333;
+text-align: center; /* Centrar todo el contenido */
+}
+.container {
+max-width: 450px; /* Ancho ajustado */
+margin: auto;
+background: #fff;
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+text-align: center; /* Centrar contenido dentro del contenedor */
+}
+h1 {
+color: #5cb85c;
+font-size: 2em;
+margin-bottom: 20px;
+}
+.points {
+font-size: 2.5em;
+color: #5cb85c;
+margin: 20px 0;
+}
+.actions button {
+display: block;
+width: 100%;
+padding: 10px; /* Padding reducido */
+margin: 8px auto; /* Margen reducido */
+border: none;
+border-radius: 8px;
+font-size: 1em;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+.actions button.add {
+background-color: #5cb85c;
+color: white;
+}
+.actions button.subtract {
+background-color: #d9534f;
+color: white;
+}
+input[type="number"], input[type="text"], select {
+width: 100%; /* Igual ancho que los botones */
+max-width: 250px; /* Tamaño máximo reducido */
+padding: 10px; /* Padding reducido */
+margin: 8px auto; /* Margen reducido */
+border: 1px solid #ccc;
+border-radius: 8px;
+font-size: 1em;
+text-align: center; /* Centrar texto en los campos */
+display: block; /* Asegurar que estén centrados */
+margin-left: auto; /* Centrado horizontal */
+margin-right: auto; /* Centrado horizontal */
+}
+.add-element-btn {
+display: block;
+width: 100%;
+padding: 12px; /* Botón más grande pero compacto */
+margin: 15px auto; /* Margen reducido */
+border: none;
+border-radius: 8px; /* Bordes redondeados */
+font-size: 1.1em;
+background-color: #5cb85c;
+color: white;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+.add-element-btn:hover {
+background-color: #4cae4c;
+}
+.section {
+margin-top: 20px;
+text-align: center; /* Centrar contenido en las secciones */
+}
+.section h2 {
+font-size: 1.2em;
+color: #5cb85c;
+margin-bottom: 10px;
+text-align: center; /* Centrar títulos de sección */
+}
+.item-list {
+margin-top: 10px;
+}
+.item {
+background: #f9f9f9;
+padding: 10px;
+margin: 5px auto;
+border-radius: 8px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+max-width: 250px; /* Ajuste de ancho */
+margin-left: auto; /* Centrado horizontal */
+margin-right: auto; /* Centrado horizontal */
+}
+.item span {
+flex-grow: 1;
+font-size: 0.9em;
+}
+.item button {
+background-color: #5bc0de;
+color: white;
+border: none;
+padding: 8px 12px;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+.item button:hover {
+background-color: #46b8da;
+}
+.remove-btn {
+background-color: #d9534f;
+color: white;
+border: none;
+padding: 6px 10px;
+border-radius: 8px;
+cursor: pointer;
+margin-left: 10px;
+transition: background-color 0.3s ease;
+}
+.remove-btn:hover {
+background-color: #c9302c;
+}
+.hour-redeem {
+display: flex;
+gap: 10px;
+align-items: center;
+justify-content: center; /* Centrar elementos */
+margin-top: 10px;
+}
+.hour-redeem input {
+width: 100px; /* Tamaño ajustado */
+padding: 10px; /* Padding reducido */
+border: 1px solid #ccc;
+border-radius: 8px;
+font-size: 1em;
+text-align: center;
+}
+.hour-redeem label {
+font-size: 0.9em;
+color: #555;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⭐ Lucia App</h1>
+<div class="points" id="points">0</div>
+<div class="actions">
+<input type="number" id="pointsInput" placeholder="Ingrese puntos" min="1">
+<button class="add" onclick="updatePoints('add')">Agregar Puntos</button>
+<button class="subtract" onclick="updatePoints('subtract')">Restar Puntos</button>
+</div>
+
+<!-- Formulario para agregar nuevos elementos -->
+<div class="section">
+<h2>Agregar Nuevo Elemento</h2>
+<select id="categorySelector">
+<option value="earn">Cómo Ganar Puntos</option>
+<option value="reward">Recompensas</option>
+<option value="lose">Cómo Perder Puntos</option>
+</select>
+<input type="text" id="newItemName" placeholder="Nombre del elemento">
+<input type="number" id="newItemPoints" placeholder="Puntos que vale" min="1">
+<button class="add-element-btn" onclick="addNewItem()">Agregar Elemento</button>
+</div>
+
+<!-- Lista de cómo ganar puntos -->
+<div class="section">
+<h2>Cómo Ganar Puntos</h2>
+<div class="item-list" id="earnList">
+<div class="item">
+<span>Limpiar el cuarto (2 puntos)</span>
+<button onclick="earnPoints(2)">Ganar</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+</div>
+</div>
+</div>
+
+<!-- Lista de cómo perder puntos -->
+<div class="section">
+<h2>Cómo Perder Puntos</h2>
+<div class="item-list" id="loseList">
+<div class="item">
+<span>Mal comportamiento (-5 puntos)</span>
+<button onclick="losePoints(5)">Perder</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+</div>
+</div>
+</div>
+
+<!-- Lista de recompensas -->
+<div class="section">
+<h2>Recompensas</h2>
+<div class="item-list" id="rewardList">
+<div class="item">
+<span>Galletas (15 puntos)</span>
+<button onclick="redeemReward(15)">Canjear</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+</div>
+<div class="item">
+<span>Helado (10 puntos)</span>
+<button onclick="redeemReward(10)">Canjear</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+</div>
+<div class="item">
+<span>Juguete (20 puntos)</span>
+<button onclick="redeemReward(20)">Canjear</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+</div>
+</div>
+</div>
+
+<!-- Canjes por hora -->
+<div class="section">
+<h2>Canjes por Hora</h2>
+<p><strong>Costo:</strong> 1 punto por hora.</p>
+<div class="hour-redeem">
+<label for="hoursToRedeem">Cantidad:</label>
+<input type="number" id="hoursToRedeem" placeholder="Horas" min="1">
+<button onclick="redeemHours()">Canjear</button>
+</div>
+</div>
+</div>
+
+<script>
+let totalPoints = 0;
+
+function updatePoints(action) {
+const pointsInput = document.getElementById('pointsInput');
+const pointsValue = parseInt(pointsInput.value, 10);
+
+if (isNaN(pointsValue) || pointsValue <= 0) {
+alert('Por favor, ingrese un número válido mayor que 0.');
+return;
+}
+
+if (action === 'add') {
+totalPoints += pointsValue;
+} else if (action === 'subtract') {
+if (totalPoints - pointsValue < 0) {
+alert('No se pueden restar más puntos de los que tiene.');
+return;
+}
+totalPoints -= pointsValue;
+}
+
+document.getElementById('points').textContent = totalPoints;
+pointsInput.value = '';
+}
+
+function earnPoints(points) {
+totalPoints += points;
+document.getElementById('points').textContent = totalPoints;
+alert(`¡Has ganado ${points} puntos!`);
+}
+
+function losePoints(points) {
+if (totalPoints - points < 0) {
+alert('No tienes suficientes puntos para perder.');
+return;
+}
+totalPoints -= points;
+document.getElementById('points').textContent = totalPoints;
+alert(`¡Has perdido ${points} puntos!`);
+}
+
+function redeemReward(cost) {
+if (totalPoints >= cost) {
+totalPoints -= cost;
+document.getElementById('points').textContent = totalPoints;
+alert(`¡Recompensa canjeada! Ahora tienes ${totalPoints} puntos.`);
+} else {
+alert('No tienes suficientes puntos para canjear esta recompensa.');
+}
+}
+
+function addNewItem() {
+const category = document.getElementById('categorySelector').value;
+const itemName = document.getElementById('newItemName').value.trim();
+const itemPoints = parseInt(document.getElementById('newItemPoints').value, 10);
+
+if (!itemName || isNaN(itemPoints) || itemPoints <= 0) {
+alert('Por favor, ingrese un nombre de elemento válido y una cantidad de puntos mayor que 0.');
+return;
+}
+
+// Crear un nuevo elemento HTML
+const newItem = document.createElement('div');
+newItem.className = `item`;
+newItem.innerHTML = `
+<span>${itemName} (${itemPoints} puntos)</span>
+<button onclick="${category === 'earn' ? 'earnPoints' : category === 'reward' ? 'redeemReward' : 'losePoints'}(${itemPoints})">${category === 'reward' ? 'Canjear' : category === 'earn' ? 'Ganar' : 'Perder'}</button>
+<button class="remove-btn" onclick="removeItem(this)">X</button>
+`;
+
+// Agregar el elemento a la lista correspondiente
+const targetList = document.getElementById(`${category}List`);
+targetList.appendChild(newItem);
+
+// Limpiar los campos del formulario
+document.getElementById('newItemName').value = '';
+document.getElementById('newItemPoints').value = '';
+}
+
+function removeItem(button) {
+const item = button.parentElement;
+item.remove();
+}
+
+function redeemHours() {
+const hoursInput = document.getElementById('hoursToRedeem');
+const hours = parseInt(hoursInput.value, 10);
+
+if (isNaN(hours) || hours <= 0) {
+alert('Por favor, ingrese una cantidad válida de horas.');
+return;
+}
+
+const cost = hours * 1; // 1 punto por hora
+if (totalPoints >= cost) {
+totalPoints -= cost;
+document.getElementById('points').textContent = totalPoints;
+alert(`¡Has canjeado ${hours} horas! Ahora tienes ${totalPoints} puntos.`);
+} else {
+alert('No tienes suficientes puntos para canjear estas horas.');
+}
+
+hoursInput.value = ''; // Limpiar el campo de entrada
+}
+</script>
+</body>
+</html>
+
+
+
+    <script>
+        
+    </script>
+</body>
+</html>
